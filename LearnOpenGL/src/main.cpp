@@ -18,8 +18,8 @@ void processInput(GLFWwindow* window)
 int main()
 {
   glfwInit();
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
   
   GLFWwindow* window = glfwCreateWindow(800, 600, "LearnOpenGL", nullptr, nullptr);
@@ -39,13 +39,19 @@ int main()
   
 
   float vertices[] = {
-    -0.5f, -0.5f, 0.0f,
+     0.5f,  0.5f, 0.0f,
      0.5f, -0.5f, 0.0f,
-     0.0f,  0.5f, 0.0f
+    -0.5f, -0.5f, 0.0f,
+    -0.5f,  0.5f, 0.0f 
   };
-  unsigned int vbo, vao;
-  glGenVertexArrays(1, &vao);
-  glGenBuffers(1, &vbo);
+  unsigned int indices[] = {
+    0,1,3,
+    1,2,3
+  };
+  unsigned int vbo, vao, ebo;
+  glCreateVertexArrays(1, &vao);
+  glCreateBuffers(1, &vbo);
+  glCreateBuffers(1, &ebo);
   glBindVertexArray(vao);
   glBindBuffer(GL_ARRAY_BUFFER, vbo);
   /*
@@ -55,6 +61,8 @@ int main()
    * GL_DYNAMIC_DRAW: 数据变化很多，可以使用许多次
    */
   glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
   glEnableVertexAttribArray(0);
   glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -142,7 +150,7 @@ int main()
     // draw our first triangle
     glUseProgram(program);
     glBindVertexArray(vao); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     // glBindVertexArray(0); // no need to unbind it every time 
 
     // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
