@@ -1,0 +1,24 @@
+# directory
+**/bin/
+**/bin-int/
+**/build/
+.vscode/
+
+# files
+*.exe
+*.ini
+*.json
+*.rc
+*.aps
+Makefile
+
+# mac
+*.DS_Store
+*.xcodeproj/
+
+# vs
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+*.sln
+*.vs/
