@@ -48,7 +48,7 @@ void Shader::SetVec4(const std::string& name, float x, float y, float z, float w
 void Shader::SetInt(const std::string& name, int value) const
 {
 	Bind();
-	glUniform1d(GetUniformLocation(name), value);
+	glUniform1i(GetUniformLocation(name), value);
 }
 
 int Shader::GetUniformLocation(const std::string & name) const

@@ -76,21 +76,32 @@ int main()
   glBindVertexArray(0);
 
   Shader shader("assets/shaders/baseShader.glsl");
-
+  stbi_set_flip_vertically_on_load(true);
   int width, height, channel;
-  unsigned char* data = stbi_load("assets/textures/wall.jpg", &width, &height, &channel, 0);
-  unsigned int texture;
+  unsigned char* data = stbi_load("assets/textures/wall.jpg", &width, &height, &channel, 4);
+  unsigned int texture, texture2;
   glCreateTextures(GL_TEXTURE_2D, 1, &texture);
   /*
    * 这里第三个参数是internalformat，不能用GL_RGB，它是format
    */
-  glTextureStorage2D(texture, 1, GL_RGB8, width, height);
+  glTextureStorage2D(texture, 1, GL_RGBA8, width, height);
   glTextureParameteri(texture, GL_TEXTURE_WRAP_S, GL_REPEAT);
   glTextureParameteri(texture, GL_TEXTURE_WRAP_T, GL_REPEAT);
   glTextureParameteri(texture, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
   glTextureParameteri(texture, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-  glTextureSubImage2D(texture, 0, 0, 0, width, height, GL_RGB, GL_UNSIGNED_BYTE, data);
+  glTextureSubImage2D(texture, 0, 0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, data);
   glGenerateTextureMipmap(texture);
+  stbi_image_free(data);
+
+  data = stbi_load("assets/textures/awesomeface.png", &width, &height, &channel, 4);
+  glCreateTextures(GL_TEXTURE_2D, 1, &texture2);
+  glTextureStorage2D(texture2, 1, GL_RGBA8, width, height);
+  glTextureParameteri(texture2, GL_TEXTURE_WRAP_S, GL_REPEAT);
+  glTextureParameteri(texture2, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  glTextureParameteri(texture2, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+  glTextureParameteri(texture2, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glTextureSubImage2D(texture2, 0, 0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, data);
+  glGenerateTextureMipmap(texture2);
   stbi_image_free(data);
 
   while (!glfwWindowShouldClose(window))
@@ -100,8 +111,11 @@ int main()
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    glBindTexture(GL_TEXTURE_2D, texture);
     shader.Bind();
+    shader.SetInt("vTexture", 0);
+    shader.SetInt("vTexture2", 1);
+    glBindTextureUnit(0, texture);
+    glBindTextureUnit(1, texture2);
     glBindVertexArray(vao);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
     glfwSwapBuffers(window);
