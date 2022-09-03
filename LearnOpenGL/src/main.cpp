@@ -39,10 +39,10 @@ int main()
   
 
   float vertices[] = {
-     0.5f,  0.5f, 0.0f,
-     0.5f, -0.5f, 0.0f,
-    -0.5f, -0.5f, 0.0f,
-    -0.5f,  0.5f, 0.0f 
+     0.5f,  0.5f, 0.0f, 0.8f, 0.0f, 0.0f,
+     0.5f, -0.5f, 0.0f, 0.0f, 0.8f, 0.0f,
+    -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 0.8f,
+    -0.5f,  0.5f, 0.0f, 0.8f, 0.0f, 0.8f
   };
   unsigned int indices[] = {
     0,1,3,
@@ -63,26 +63,31 @@ int main()
   glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
   glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
   glEnableVertexAttribArray(0);
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+  glEnableVertexAttribArray(1);
+  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3*sizeof(float)));
   glBindBuffer(GL_ARRAY_BUFFER, 0);
   glBindVertexArray(0);
 
   const char* vertexShaderSource =
     "#version 330 core\n"
     "layout(location = 0) in vec3 aPos;\n"
+    "layout(location = 1) in vec3 aColor;\n"
+    "out vec3 vColor;"
     "void main()\n"
     "{\n"
     " gl_Position = vec4(aPos, 1.0);\n"
+    " vColor = aColor;\n"
     "}\0";
   
   const char* fragmentShaderSource =
     "#version 330 core\n"
+    "in vec3 vColor;\n"
     "out vec4 FragColor;\n"
-    "uniform vec4 vertexColor;\n"
     "void main()\n"
     "{\n"
-    "  FragColor = vertexColor;"
+    "  FragColor = vec4(vColor, 1.0f);\n"
     "}\0";
 
   unsigned int vs, fs;
@@ -137,30 +142,16 @@ int main()
   glDeleteShader(vs);
   glDeleteShader(fs);
 
-  int loc = glGetUniformLocation(program, "vertexColor");
-
   while (!glfwWindowShouldClose(window))
   {
-    // input
-            // -----
     processInput(window);
 
-    // render
-    // ------
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    float time = glfwGetTime();
-    float greenValue = sin(time) / 2.0f + 0.5;
-    glUniform4f(loc, 0.0, greenValue, 0.0, 1.0);
-    // draw our first triangle
     glUseProgram(program);
-    glBindVertexArray(vao); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-    // glBindVertexArray(0); // no need to unbind it every time 
-
-    // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
-    // -------------------------------------------------------------------------------
+    glBindVertexArray(vao);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
     glfwSwapBuffers(window);
     glfwPollEvents();
   }
