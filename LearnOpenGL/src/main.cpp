@@ -79,9 +79,10 @@ int main()
   const char* fragmentShaderSource =
     "#version 330 core\n"
     "out vec4 FragColor;\n"
+    "uniform vec4 vertexColor;\n"
     "void main()\n"
     "{\n"
-    "  FragColor = vec4(1.0, 0.5, 0.2, 1.0);"
+    "  FragColor = vertexColor;"
     "}\0";
 
   unsigned int vs, fs;
@@ -136,6 +137,8 @@ int main()
   glDeleteShader(vs);
   glDeleteShader(fs);
 
+  int loc = glGetUniformLocation(program, "vertexColor");
+
   while (!glfwWindowShouldClose(window))
   {
     // input
@@ -147,6 +150,9 @@ int main()
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
+    float time = glfwGetTime();
+    float greenValue = sin(time) / 2.0f + 0.5;
+    glUniform4f(loc, 0.0, greenValue, 0.0, 1.0);
     // draw our first triangle
     glUseProgram(program);
     glBindVertexArray(vao); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
