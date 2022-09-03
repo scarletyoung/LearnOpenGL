@@ -4,6 +4,8 @@
 #include <iostream>
 #include <vector>
 
+#include "shader.h"
+
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
   glViewport(0, 0, width, height);
@@ -70,77 +72,7 @@ int main()
   glBindBuffer(GL_ARRAY_BUFFER, 0);
   glBindVertexArray(0);
 
-  const char* vertexShaderSource =
-    "#version 330 core\n"
-    "layout(location = 0) in vec3 aPos;\n"
-    "layout(location = 1) in vec3 aColor;\n"
-    "out vec3 vColor;"
-    "void main()\n"
-    "{\n"
-    " gl_Position = vec4(aPos, 1.0);\n"
-    " vColor = aColor;\n"
-    "}\0";
-  
-  const char* fragmentShaderSource =
-    "#version 330 core\n"
-    "in vec3 vColor;\n"
-    "out vec4 FragColor;\n"
-    "void main()\n"
-    "{\n"
-    "  FragColor = vec4(vColor, 1.0f);\n"
-    "}\0";
-
-  unsigned int vs, fs;
-  vs = glCreateShader(GL_VERTEX_SHADER);
-  glShaderSource(vs, 1, &vertexShaderSource, nullptr);
-  glCompileShader(vs);
-  int success;
-  glGetShaderiv(vs, GL_COMPILE_STATUS, &success);
-  if (success == GL_FALSE)
-  {
-    GLint len = 0;
-    glGetShaderiv(vs, GL_INFO_LOG_LENGTH, &len);
-    std::vector<GLchar> infoLog(len);
-    glGetShaderInfoLog(vs, len, &len, &infoLog[0]);
-    glDeleteShader(vs);
-    std::cout << "Compile Shader Error:" << infoLog.data() << std::endl;
-    return -1;
-  }
-
-  fs = glCreateShader(GL_FRAGMENT_SHADER);
-  glShaderSource(fs, 1, &fragmentShaderSource, nullptr);
-  glCompileShader(fs);
-  glGetShaderiv(fs, GL_COMPILE_STATUS, &success);
-  if (success == GL_FALSE)
-  {
-    GLint len = 0;
-    glGetShaderiv(fs, GL_INFO_LOG_LENGTH, &len);
-    std::vector<GLchar> infoLog(len);
-    glGetShaderInfoLog(fs, len, &len, &infoLog[0]);
-    glDeleteShader(vs);
-    glDeleteShader(fs);
-    std::cout << "Compile Shader Error:" << infoLog.data() << std::endl;
-    return -1;
-  }
-
-  unsigned int program = glCreateProgram();
-  glAttachShader(program, vs);
-  glAttachShader(program, fs);
-  glLinkProgram(program);
-  glGetProgramiv(program, GL_LINK_STATUS, &success);
-  if (success == GL_FALSE)
-  {
-    int len = 0;
-    glGetProgramiv(fs, GL_INFO_LOG_LENGTH, &len);
-    std::vector<char> infoLog(len);
-    glGetProgramInfoLog(fs, len, &len, &infoLog[0]);
-    glDeleteShader(vs);
-    glDeleteShader(fs);
-    std::cout << "Link Shader Error:" << infoLog.data() << std::endl;
-    return -1;
-  }
-  glDeleteShader(vs);
-  glDeleteShader(fs);
+  Shader shader("assets/shaders/baseShader.glsl");
 
   while (!glfwWindowShouldClose(window))
   {
@@ -149,7 +81,7 @@ int main()
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    glUseProgram(program);
+    shader.Bind();
     glBindVertexArray(vao);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
     glfwSwapBuffers(window);
@@ -157,7 +89,6 @@ int main()
   }
   glDeleteVertexArrays(1, &vao);
   glDeleteBuffers(1, &vbo);
-  glDeleteProgram(program);
   glfwTerminate();
   return 0;
 }
