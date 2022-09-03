@@ -9,10 +9,11 @@ public:
   Shader(const std::string& filePath);
   ~Shader();
 
-  void Bind();
-  void Unbind();
+  void Bind() const;
+  void Unbind() const;
 
-  void SetVec4(const std::string& name, float x, float y, float z, float w);
+  void SetVec4(const std::string& name, float x, float y, float z, float w) const;
+  void SetInt(const std::string& name, int value) const;
 private:
   int GetUniformLocation(const std::string& name) const;
   std::string ReadFile(const std::string& filepath);

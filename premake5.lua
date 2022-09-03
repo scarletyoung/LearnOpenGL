@@ -10,6 +10,7 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 IncludeDir = {}
 IncludeDir['glfw'] = "LearnOpenGL/third/glfw/include"
 IncludeDir['glad'] = "LearnOpenGL/third/glad/include"
+IncludeDir["stb_image"] = "LearnOpenGL/third/stb_image"
 
 include "LearnOpenGL/third/glfw"
 include "LearnOpenGL/third/glad"
@@ -26,12 +27,15 @@ project "LearnOpenGL"
   files {
     "%{prj.name}/src/**.h",
     "%{prj.name}/src/**.cpp",
+    "%{prj.name}/third/stb_image/**.cpp",
+    "%{prj.name}/third/stb_image/**.h",
   }
 
   includedirs {
     "%{prj.name}/src",
     "%{IncludeDir.glfw}",
     "%{IncludeDir.glad}",
+    "%{IncludeDir.stb_image}",
   }
 
   links {
