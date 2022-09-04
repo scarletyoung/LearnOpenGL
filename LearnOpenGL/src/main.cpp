@@ -145,8 +145,27 @@ int main()
   glGenerateTextureMipmap(texture2);
   stbi_image_free(data);
 
+  glm::vec3 cubePositions[] = {
+    glm::vec3(0.0f,  0.0f,  0.0f),
+    glm::vec3(2.0f,  5.0f, -15.0f),
+    glm::vec3(-1.5f, -2.2f, -2.5f),
+    glm::vec3(-3.8f, -2.0f, -12.3f),
+    glm::vec3(2.4f, -0.4f, -3.5f),
+    glm::vec3(-1.7f,  3.0f, -7.5f),
+    glm::vec3(1.3f, -2.0f, -2.5f),
+    glm::vec3(1.5f,  2.0f, -2.5f),
+    glm::vec3(1.5f,  0.2f, -1.5f),
+    glm::vec3(-1.3f,  1.0f, -1.5f)
+  };
+
   glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -3.0f));
   glm::mat4 projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 1000.0f);
+  glBindTextureUnit(0, texture);
+  glBindTextureUnit(1, texture2);
+    shader.SetInt("vTexture", 0);
+    shader.SetInt("vTexture2", 1);
+    shader.SetMat4("view", view);
+    shader.SetMat4("projection", projection);
 
   while (!glfwWindowShouldClose(window))
   {
@@ -155,20 +174,20 @@ int main()
     glEnable(GL_DEPTH_TEST);
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glBindVertexArray(vao);
 
     float time = glfwGetTime();
     shader.Bind();
-    glm::mat4 model = glm::rotate(glm::mat4(1.0f), time, glm::vec3(0.5f, 1.0f, 0.0f));
-    shader.SetInt("vTexture", 0);
-    shader.SetInt("vTexture2", 1);
-    shader.SetMat4("model", model);
-    shader.SetMat4("view", view);
-    shader.SetMat4("projection", projection);
+    for (int i = 0; i < 10; i++)
+    {
+      glm::mat4 model(1.0f);
+      model = glm::translate(model, cubePositions[i]);
+      model = glm::rotate(model, glm::radians(i * 20.0f), glm::vec3(1.0f, 0.3, 0.5f));
+      shader.SetMat4("model", model);
+      glDrawElements(GL_TRIANGLES, 6 * 6, GL_UNSIGNED_INT, nullptr);
+
+    }
     
-    glBindTextureUnit(0, texture);
-    glBindTextureUnit(1, texture2);
-    glBindVertexArray(vao);
-    glDrawElements(GL_TRIANGLES, 6 * 6, GL_UNSIGNED_INT, nullptr);
     glfwSwapBuffers(window);
     glfwPollEvents();
   }
