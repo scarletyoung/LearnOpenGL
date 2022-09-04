@@ -107,10 +107,6 @@ int main()
   glGenerateTextureMipmap(texture2);
   stbi_image_free(data);
 
-  glm::mat4 translate = glm::translate(glm::mat4(1.0f), glm::vec3(0.4f, 0.6f, 0.0f));
-  glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(1.2f, 0.8f, 1.0f));
-  glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), glm::radians(45.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-  glm::mat4 model = translate * rotation * scale;
   while (!glfwWindowShouldClose(window))
   {
     processInput(window);
@@ -118,7 +114,11 @@ int main()
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
+    float time = glfwGetTime();
+
+
     shader.Bind();
+  glm::mat4 model = glm::rotate(glm::mat4(1.0f), time, glm::vec3(0.0f, 0.0f, 1.0f));
     shader.SetInt("vTexture", 0);
     shader.SetInt("vTexture2", 1);
     shader.SetMat4("model", model);
