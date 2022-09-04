@@ -1,3 +1,6 @@
 [submodule "LearnOpenGL/third/glfw"]
 	path = LearnOpenGL/third/glfw
 	url = git@github.com:sc-graphics/glfw.git
+[submodule "LearnOpenGL/third/glm"]
+	path = LearnOpenGL/third/glm
+	url = git@github.com:g-truc/glm.git

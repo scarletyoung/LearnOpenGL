@@ -2,6 +2,7 @@
 
 #include <string>
 #include <unordered_map>
+#include <glm/glm.hpp>
 
 class Shader
 {
@@ -14,6 +15,7 @@ public:
 
   void SetVec4(const std::string& name, float x, float y, float z, float w) const;
   void SetInt(const std::string& name, int value) const;
+  void SetMat4(const std::string& name, const glm::mat4& mat4) const;
 private:
   int GetUniformLocation(const std::string& name) const;
   std::string ReadFile(const std::string& filepath);

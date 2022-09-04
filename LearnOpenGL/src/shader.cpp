@@ -4,6 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <array>
+#include <glm/gtc/type_ptr.hpp>
 
 static GLenum ShaderTypeFromString(const std::string& type)
 {
@@ -49,6 +50,12 @@ void Shader::SetInt(const std::string& name, int value) const
 {
 	Bind();
 	glUniform1i(GetUniformLocation(name), value);
+}
+
+void Shader::SetMat4(const std::string& name, const glm::mat4& mat4) const
+{
+	Bind();
+	glUniformMatrix4fv(GetUniformLocation(name), 1, false, glm::value_ptr(mat4));
 }
 
 int Shader::GetUniformLocation(const std::string & name) const

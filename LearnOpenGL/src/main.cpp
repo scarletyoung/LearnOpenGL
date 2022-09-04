@@ -1,8 +1,11 @@
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-
 #include <iostream>
 #include <vector>
+
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 #include "shader.h"
 #include "stb_image.h"
@@ -104,6 +107,10 @@ int main()
   glGenerateTextureMipmap(texture2);
   stbi_image_free(data);
 
+  glm::mat4 translate = glm::translate(glm::mat4(1.0f), glm::vec3(0.4f, 0.6f, 0.0f));
+  glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(1.2f, 0.8f, 1.0f));
+  glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), glm::radians(45.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+  glm::mat4 model = translate * rotation * scale;
   while (!glfwWindowShouldClose(window))
   {
     processInput(window);
@@ -114,6 +121,8 @@ int main()
     shader.Bind();
     shader.SetInt("vTexture", 0);
     shader.SetInt("vTexture2", 1);
+    shader.SetMat4("model", model);
+    
     glBindTextureUnit(0, texture);
     glBindTextureUnit(1, texture2);
     glBindVertexArray(vao);

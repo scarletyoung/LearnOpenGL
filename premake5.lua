@@ -11,6 +11,7 @@ IncludeDir = {}
 IncludeDir['glfw'] = "LearnOpenGL/third/glfw/include"
 IncludeDir['glad'] = "LearnOpenGL/third/glad/include"
 IncludeDir["stb_image"] = "LearnOpenGL/third/stb_image"
+IncludeDir['glm'] = "LearnOpenGL/third/glm"
 
 include "LearnOpenGL/third/glfw"
 include "LearnOpenGL/third/glad"
@@ -36,6 +37,7 @@ project "LearnOpenGL"
     "%{IncludeDir.glfw}",
     "%{IncludeDir.glad}",
     "%{IncludeDir.stb_image}",
+    "%{IncludeDir.glm}",
   }
 
   links {
