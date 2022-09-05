@@ -40,6 +40,12 @@ void Shader::Unbind() const
 	glUseProgram(0);
 }
 
+void Shader::SetVec3(const std::string& name, float x, float y, float z) const
+{
+	Bind();
+	glUniform3f(GetUniformLocation(name), x, y, z);
+}
+
 void Shader::SetVec4(const std::string& name, float x, float y, float z, float w) const
 {
 	Bind();

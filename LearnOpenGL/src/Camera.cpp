@@ -2,7 +2,6 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <algorithm>
-#include <iostream>
 
 inline float Clamp(float value, float bottom, float top)
 {
@@ -40,7 +39,6 @@ void Camera::OnMouseMovement(float xOffset, float yOffset)
   mYaw += xOffset * mRotationSpeed;
   mPitch += yOffset * mRotationSpeed;
   mPitch = Clamp(mPitch, -89.0f, 89.0f);
-  std::cout << "Pitch:" << mPitch << std::endl;
   float yaw = glm::radians(mYaw);
   float pitch = glm::radians(mPitch);
   mFront = glm::vec3(glm::cos(yaw) * glm::cos(pitch), glm::sin(pitch), glm::sin(yaw) * glm::cos(pitch));

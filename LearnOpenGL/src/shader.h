@@ -13,6 +13,7 @@ public:
   void Bind() const;
   void Unbind() const;
 
+  void SetVec3(const std::string& name, float x, float y, float z) const;
   void SetVec4(const std::string& name, float x, float y, float z, float w) const;
   void SetInt(const std::string& name, int value) const;
   void SetMat4(const std::string& name, const glm::mat4& mat4) const;
