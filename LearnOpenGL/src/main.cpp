@@ -97,35 +97,35 @@ int main()
   glfwSetScrollCallback(window, ScrollCallback);
   
   float vertices[] = {
-    -0.5f, -0.5f, -0.5f,
-     0.5f, -0.5f, -0.5f,
-     0.5f,  0.5f, -0.5f,
-    -0.5f,  0.5f, -0.5f,
+    -0.5f, -0.5f, -0.5f, -1.0f, -1.0f, -1.0f,
+     0.5f, -0.5f, -0.5f,  1.0f, -1.0f, -1.0f,
+     0.5f,  0.5f, -0.5f,  1.0f,  1.0f, -1.0f,
+    -0.5f,  0.5f, -0.5f, -1.0f,  1.0f, -1.0f,
 
-    -0.5f, -0.5f,  0.5f,
-     0.5f, -0.5f,  0.5f,
-     0.5f,  0.5f,  0.5f,
-    -0.5f,  0.5f,  0.5f,
+    -0.5f, -0.5f,  0.5f, -1.0f, -1.0f,  1.0f,
+     0.5f, -0.5f,  0.5f,  1.0f, -1.0f,  1.0f,
+     0.5f,  0.5f,  0.5f,  1.0f,  1.0f,  1.0f,
+    -0.5f,  0.5f,  0.5f, -1.0f,  1.0f,  1.0f,
 
-    -0.5f,  0.5f,  0.5f,
-    -0.5f,  0.5f, -0.5f,
-    -0.5f, -0.5f, -0.5f,
-    -0.5f, -0.5f,  0.5f,
+    -0.5f,  0.5f,  0.5f, -1.0f,  1.0f,  1.0f,
+    -0.5f,  0.5f, -0.5f, -1.0f,  1.0f, -1.0f,
+    -0.5f, -0.5f, -0.5f, -1.0f, -1.0f, -1.0f,
+    -0.5f, -0.5f,  0.5f, -1.0f, -1.0f,  1.0f,
 
-     0.5f,  0.5f,  0.5f,
-     0.5f,  0.5f, -0.5f,
-     0.5f, -0.5f, -0.5f,
-     0.5f, -0.5f,  0.5f,
+     0.5f,  0.5f,  0.5f,  1.0f,  1.0f,  1.0f,
+     0.5f,  0.5f, -0.5f,  1.0f,  1.0f, -1.0f,
+     0.5f, -0.5f, -0.5f,  1.0f, -1.0f, -1.0f,
+     0.5f, -0.5f,  0.5f,  1.0f, -1.0f,  1.0f,
 
-    -0.5f, -0.5f, -0.5f,
-     0.5f, -0.5f, -0.5f,
-     0.5f, -0.5f,  0.5f,
-    -0.5f, -0.5f,  0.5f,
+    -0.5f, -0.5f, -0.5f, -1.0f, -1.0f, -1.0f,
+     0.5f, -0.5f, -0.5f,  1.0f, -1.0f, -1.0f,
+     0.5f, -0.5f,  0.5f,  1.0f, -1.0f,  1.0f,
+    -0.5f, -0.5f,  0.5f, -1.0f, -1.0f,  1.0f,
 
-    -0.5f,  0.5f, -0.5f,
-     0.5f,  0.5f, -0.5f,
-     0.5f,  0.5f,  0.5f,
-    -0.5f,  0.5f,  0.5f,
+    -0.5f,  0.5f, -0.5f, -1.0f,  1.0f, -1.0f,
+     0.5f,  0.5f, -0.5f,  1.0f,  1.0f, -1.0f,
+     0.5f,  0.5f,  0.5f,  1.0f,  1.0f,  1.0f,
+    -0.5f,  0.5f,  0.5f, -1.0f,  1.0f,  1.0f,
   };
   unsigned int indices[] = {
     0,1,3,
@@ -136,13 +136,13 @@ int main()
     
     8,9,11,
     9,10,11,
-    
+
     12,13,15,
     13,14,15,
     
     16,17,19,
     17,18,19,
-    
+
     20,21,23,
     21,22,23,
   };
@@ -161,8 +161,10 @@ int main()
   glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
   glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
   glEnableVertexAttribArray(0);
+  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+  glEnableVertexAttribArray(1);
   glBindBuffer(GL_ARRAY_BUFFER, 0);
   glBindVertexArray(0);
 
@@ -175,7 +177,7 @@ int main()
   glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, lightEbo);
   glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
   glEnableVertexAttribArray(0);
   glBindBuffer(GL_ARRAY_BUFFER, 0);
   glBindVertexArray(0);
@@ -184,23 +186,34 @@ int main()
   Shader lightShader("assets/shaders/lightShader.glsl");
   Shader shader("assets/shaders/baseShader.glsl");
 
-  glm::mat4 lightModel(1.0f);
-  lightModel = glm::translate(lightModel, lightPos);
-  lightModel = glm::scale(lightModel, glm::vec3(0.2f));
-  lightShader.SetMat4("model", lightModel);
+
   lightShader.SetVec3("lightColor", 1.0f, 1.0f, 1.0f);
 
-  shader.SetMat4("model", glm::mat4(1.0f));
-  shader.SetVec3("lightColor", 1.0f, 1.0f, 1.0f);
-  shader.SetVec3("objectColor", 1.0f, 0.5f, 0.31f);
+  glm::mat4 model(1.0f);
+  shader.SetMat4("model", model);
+  shader.SetMat4("nModel", glm::transpose(glm::inverse(model)));
+  shader.SetVec3("light.ambient", 0.2f, 0.2f, 0.2f);
+  shader.SetVec3("light.diffuse", 0.5f, 0.5f, 0.5f);
+  shader.SetVec3("light.specular", 1.0f, 1.0f, 1.0f);
+ 
+  shader.SetVec3("material.ambient", 0.1f, 0.05f, 0.031f);
+  shader.SetVec3("material.diffuse", 1.0f, 0.5f, 0.31f);
+  shader.SetVec3("material.specular", 0.5f, 0.5f, 0.5f);
+  shader.SetFloat("material.shiness", 32.0);
 
   while (!glfwWindowShouldClose(window))
   {
     ProcessInput(window);
-
     glEnable(GL_DEPTH_TEST);
-    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    lightPos = glm::vec3(2.0f * sin(glfwGetTime()), 0.0f, 1.5f * cos(glfwGetTime()));
+
+    glm::mat4 lightModel(1.0f);
+    lightModel = glm::translate(lightModel, lightPos);
+    lightModel = glm::scale(lightModel, glm::vec3(0.2f));
+    lightShader.SetMat4("model", lightModel);
 
     glm::mat4 projection = camera.GetProjectionMatrix();
     glm::mat4 view = camera.GetViewMatrix();
@@ -212,6 +225,9 @@ int main()
     glDrawElements(GL_TRIANGLES, 6 * 6, GL_UNSIGNED_INT, nullptr);
 
     shader.Bind();
+    auto camerePos = camera.GetPosition();
+    shader.SetVec3("viewPos", camerePos.x, camerePos.y, camerePos.z);
+    shader.SetVec3("light.position", lightPos.x, lightPos.y, lightPos.z);
     shader.SetMat4("view", view);
     shader.SetMat4("projection", projection);
     glBindVertexArray(vao);

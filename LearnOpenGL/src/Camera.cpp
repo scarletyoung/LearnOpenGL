@@ -88,6 +88,11 @@ void Camera::SetAspectRatio(float aspectRatio)
   mAspectRatio = aspectRatio;
 }
 
+glm::vec3 Camera::GetPosition() const
+{
+  return mPosition;
+}
+
 glm::mat4 Camera::GetViewMatrix() const
 {
   return mViewMatrix;
