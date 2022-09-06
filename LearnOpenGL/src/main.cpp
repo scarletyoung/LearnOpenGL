@@ -97,35 +97,35 @@ int main()
   glfwSetScrollCallback(window, ScrollCallback);
   
   float vertices[] = {
-    -0.5f, -0.5f, -0.5f, -1.0f, -1.0f, -1.0f,
-     0.5f, -0.5f, -0.5f,  1.0f, -1.0f, -1.0f,
-     0.5f,  0.5f, -0.5f,  1.0f,  1.0f, -1.0f,
-    -0.5f,  0.5f, -0.5f, -1.0f,  1.0f, -1.0f,
-
-    -0.5f, -0.5f,  0.5f, -1.0f, -1.0f,  1.0f,
-     0.5f, -0.5f,  0.5f,  1.0f, -1.0f,  1.0f,
-     0.5f,  0.5f,  0.5f,  1.0f,  1.0f,  1.0f,
-    -0.5f,  0.5f,  0.5f, -1.0f,  1.0f,  1.0f,
-
-    -0.5f,  0.5f,  0.5f, -1.0f,  1.0f,  1.0f,
-    -0.5f,  0.5f, -0.5f, -1.0f,  1.0f, -1.0f,
-    -0.5f, -0.5f, -0.5f, -1.0f, -1.0f, -1.0f,
-    -0.5f, -0.5f,  0.5f, -1.0f, -1.0f,  1.0f,
-
-     0.5f,  0.5f,  0.5f,  1.0f,  1.0f,  1.0f,
-     0.5f,  0.5f, -0.5f,  1.0f,  1.0f, -1.0f,
-     0.5f, -0.5f, -0.5f,  1.0f, -1.0f, -1.0f,
-     0.5f, -0.5f,  0.5f,  1.0f, -1.0f,  1.0f,
-
-    -0.5f, -0.5f, -0.5f, -1.0f, -1.0f, -1.0f,
-     0.5f, -0.5f, -0.5f,  1.0f, -1.0f, -1.0f,
-     0.5f, -0.5f,  0.5f,  1.0f, -1.0f,  1.0f,
-    -0.5f, -0.5f,  0.5f, -1.0f, -1.0f,  1.0f,
-
-    -0.5f,  0.5f, -0.5f, -1.0f,  1.0f, -1.0f,
-     0.5f,  0.5f, -0.5f,  1.0f,  1.0f, -1.0f,
-     0.5f,  0.5f,  0.5f,  1.0f,  1.0f,  1.0f,
-    -0.5f,  0.5f,  0.5f, -1.0f,  1.0f,  1.0f,
+    -0.5f, -0.5f, -0.5f, -1.0f, -1.0f, -1.0f,  0.0f, 0.0f,
+     0.5f, -0.5f, -0.5f,  1.0f, -1.0f, -1.0f,  1.0f, 0.0f,
+     0.5f,  0.5f, -0.5f,  1.0f,  1.0f, -1.0f,  1.0f, 1.0f,
+    -0.5f,  0.5f, -0.5f, -1.0f,  1.0f, -1.0f,  0.0f, 1.0f,
+                                               
+    -0.5f, -0.5f,  0.5f, -1.0f, -1.0f,  1.0f,  0.0f, 0.0f,
+     0.5f, -0.5f,  0.5f,  1.0f, -1.0f,  1.0f,  1.0f, 0.0f,
+     0.5f,  0.5f,  0.5f,  1.0f,  1.0f,  1.0f,  1.0f, 1.0f,
+    -0.5f,  0.5f,  0.5f, -1.0f,  1.0f,  1.0f,  0.0f, 1.0f,
+                                               
+    -0.5f,  0.5f,  0.5f, -1.0f,  1.0f,  1.0f,  0.0f, 0.0f,
+    -0.5f,  0.5f, -0.5f, -1.0f,  1.0f, -1.0f,  1.0f, 0.0f,
+    -0.5f, -0.5f, -0.5f, -1.0f, -1.0f, -1.0f,  1.0f, 1.0f,
+    -0.5f, -0.5f,  0.5f, -1.0f, -1.0f,  1.0f,  0.0f, 1.0f,
+                                               
+     0.5f,  0.5f,  0.5f,  1.0f,  1.0f,  1.0f,  0.0f, 0.0f,
+     0.5f,  0.5f, -0.5f,  1.0f,  1.0f, -1.0f,  1.0f, 0.0f,
+     0.5f, -0.5f, -0.5f,  1.0f, -1.0f, -1.0f,  1.0f, 1.0f,
+     0.5f, -0.5f,  0.5f,  1.0f, -1.0f,  1.0f,  0.0f, 1.0f,
+                                               
+    -0.5f, -0.5f, -0.5f, -1.0f, -1.0f, -1.0f,  0.0f, 0.0f,
+     0.5f, -0.5f, -0.5f,  1.0f, -1.0f, -1.0f,  1.0f, 0.0f,
+     0.5f, -0.5f,  0.5f,  1.0f, -1.0f,  1.0f,  1.0f, 1.0f,
+    -0.5f, -0.5f,  0.5f, -1.0f, -1.0f,  1.0f,  0.0f, 1.0f,
+                                               
+    -0.5f,  0.5f, -0.5f, -1.0f,  1.0f, -1.0f,  0.0f, 0.0f,
+     0.5f,  0.5f, -0.5f,  1.0f,  1.0f, -1.0f,  1.0f, 0.0f,
+     0.5f,  0.5f,  0.5f,  1.0f,  1.0f,  1.0f,  1.0f, 1.0f,
+    -0.5f,  0.5f,  0.5f, -1.0f,  1.0f,  1.0f,  0.0f, 1.0f,
   };
   unsigned int indices[] = {
     0,1,3,
@@ -161,10 +161,12 @@ int main()
   glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
   glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
   glEnableVertexAttribArray(0);
-  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
   glEnableVertexAttribArray(1);
+  glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+  glEnableVertexAttribArray(2);
   glBindBuffer(GL_ARRAY_BUFFER, 0);
   glBindVertexArray(0);
 
@@ -177,15 +179,13 @@ int main()
   glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, lightEbo);
   glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
   glEnableVertexAttribArray(0);
   glBindBuffer(GL_ARRAY_BUFFER, 0);
   glBindVertexArray(0);
 
-
   Shader lightShader("assets/shaders/lightShader.glsl");
   Shader shader("assets/shaders/baseShader.glsl");
-
 
   lightShader.SetVec3("lightColor", 1.0f, 1.0f, 1.0f);
 
@@ -196,10 +196,42 @@ int main()
   shader.SetVec3("light.diffuse", 0.5f, 0.5f, 0.5f);
   shader.SetVec3("light.specular", 1.0f, 1.0f, 1.0f);
  
-  shader.SetVec3("material.ambient", 0.1f, 0.05f, 0.031f);
+  //shader.SetVec3("material.ambient", 0.1f, 0.05f, 0.031f);
   shader.SetVec3("material.diffuse", 1.0f, 0.5f, 0.31f);
   shader.SetVec3("material.specular", 0.5f, 0.5f, 0.5f);
   shader.SetFloat("material.shiness", 32.0);
+
+  int width, height, channel;
+  stbi_set_flip_vertically_on_load(true);
+  unsigned char* data = stbi_load("assets/textures/container2.png", &width, &height, &channel, 4);
+  
+  unsigned int diffuseTexture;
+  glCreateTextures(GL_TEXTURE_2D, 1, &diffuseTexture);
+  glTextureStorage2D(diffuseTexture, 1, GL_RGBA8, width, height);
+  glTextureParameteri(diffuseTexture, GL_TEXTURE_WRAP_S, GL_REPEAT);
+  glTextureParameteri(diffuseTexture, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  glTextureParameteri(diffuseTexture, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+  glTextureParameteri(diffuseTexture, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glTextureSubImage2D(diffuseTexture, 0, 0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, data);
+  glGenerateTextureMipmap(diffuseTexture);
+  stbi_image_free(data);
+
+  data = stbi_load("assets/textures/container2_specular.png", &width, &height, &channel, 4);
+  unsigned int specularTexture;
+  glCreateTextures(GL_TEXTURE_2D, 1, &specularTexture);
+  glTextureStorage2D(specularTexture, 1, GL_RGBA8, width, height);
+  glTextureParameteri(specularTexture, GL_TEXTURE_WRAP_S, GL_REPEAT);
+  glTextureParameteri(specularTexture, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  glTextureParameteri(specularTexture, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+  glTextureParameteri(specularTexture, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glTextureSubImage2D(specularTexture, 0, 0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, data);
+  glGenerateTextureMipmap(specularTexture);
+  stbi_image_free(data);
+
+  glBindTextureUnit(0, diffuseTexture);
+  glBindTextureUnit(1, specularTexture);
+  shader.SetInt("material.diffuse", 0);
+  shader.SetInt("material.specular", 1);
 
   while (!glfwWindowShouldClose(window))
   {
