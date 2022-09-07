@@ -192,13 +192,17 @@ int main()
   glm::mat4 model(1.0f);
   //shader.SetMat4("model", model);
   //shader.SetMat4("nModel", glm::transpose(glm::inverse(model)));
-  shader.SetVec3("dLight.ambient", 0.2f, 0.2f, 0.2f);
-  shader.SetVec3("dLight.diffuse", 0.5f, 0.5f, 0.5f);
-  shader.SetVec3("dLight.specular", 1.0f, 1.0f, 1.0f);
+  //shader.SetVec3("pLight.direction", -0.2f, -1.0f, -0.3f);
+  shader.SetVec3("pLight.ambient", 0.2f, 0.2f, 0.2f);
+  shader.SetVec3("pLight.diffuse", 0.5f, 0.5f, 0.5f);
+  shader.SetVec3("pLight.specular", 1.0f, 1.0f, 1.0f);
+  shader.SetFloat("pLight.constant", 1.0f);
+  shader.SetFloat("pLight.linear", 0.09f);
+  shader.SetFloat("pLight.quad", 0.032f);
  
   //shader.SetVec3("material.ambient", 0.1f, 0.05f, 0.031f);
-  shader.SetVec3("material.diffuse", 1.0f, 0.5f, 0.31f);
-  shader.SetVec3("material.specular", 0.5f, 0.5f, 0.5f);
+  //shader.SetVec3("material.diffuse", 1.0f, 0.5f, 0.31f);
+  //shader.SetVec3("material.specular", 0.5f, 0.5f, 0.5f);
   shader.SetFloat("material.shiness", 32.0);
 
   int width, height, channel;
@@ -254,26 +258,26 @@ int main()
     glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    lightPos = glm::vec3(2.0f * sin(glfwGetTime()), 0.0f, 1.5f * cos(glfwGetTime()));
+    lightPos = glm::vec3(5.0f * sin(glfwGetTime()), 0.0f, 5.0f * cos(glfwGetTime()));
 
     glm::mat4 lightModel(1.0f);
     lightModel = glm::translate(lightModel, lightPos);
     lightModel = glm::scale(lightModel, glm::vec3(0.2f));
-    lightShader.SetMat4("model", lightModel);
 
     glm::mat4 projection = camera.GetProjectionMatrix();
     glm::mat4 view = camera.GetViewMatrix();
 
-    //lightShader.Bind();
-    //lightShader.SetMat4("view", view);
-    //lightShader.SetMat4("projection", projection);
-    //glBindVertexArray(lightVao);
-    //glDrawElements(GL_TRIANGLES, 6 * 6, GL_UNSIGNED_INT, nullptr);
+    lightShader.Bind();
+    lightShader.SetMat4("model", lightModel);
+    lightShader.SetMat4("view", view);
+    lightShader.SetMat4("projection", projection);
+    glBindVertexArray(lightVao);
+    glDrawElements(GL_TRIANGLES, 6 * 6, GL_UNSIGNED_INT, nullptr);
 
     shader.Bind();
     auto camerePos = camera.GetPosition();
+    shader.SetVec3("pLight.position", lightPos.x, lightPos.y, lightPos.z);
     shader.SetVec3("viewPos", camerePos.x, camerePos.y, camerePos.z);
-    shader.SetVec3("dLight.direction", -0.2f, -1.0f, -0.3f);
     //shader.SetVec3("light.position", lightPos.x, lightPos.y, lightPos.z);
     shader.SetMat4("view", view);
     shader.SetMat4("projection", projection);
