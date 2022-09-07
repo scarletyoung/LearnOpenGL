@@ -72,22 +72,44 @@ struct PointLight
 };
 uniform PointLight pLight;
 
+struct SpotLight
+{
+  vec3 position;
+  vec3 direction;
+
+  vec3 ambient;
+  vec3 diffuse;
+  vec3 specular;
+
+  float constant;
+  float linear;
+  float quad;
+
+  float cutoff;
+  float outerCutoff;
+};
+uniform SpotLight sLight;
+
 void main()
 {
-  vec3 ambient = texture(material.diffuse, vTexCoords).rgb * pLight.ambient;
+  vec3 ambient = texture(material.diffuse, vTexCoords).rgb * sLight.ambient;
 
-  vec3 n = normalize(vNormal);
-  vec3 lightDir = pLight.position - viewPos;
+  vec3 lightDir = sLight.position - vPos;
   float distance = length(lightDir);
   lightDir = normalize(lightDir);
-  vec3 diffuse = texture(material.diffuse, vTexCoords).rgb * max(dot(n, lightDir), 0.0) * pLight.diffuse;
+  float theta = dot(lightDir, normalize(-sLight.direction));
+  float epsilon = sLight.cutoff - sLight.outerCutoff;
+  float intensity = clamp((theta - sLight.outerCutoff) / epsilon, 0.0, 1.0);
+
+  vec3 n = normalize(vNormal);
+  vec3 diffuse = texture(material.diffuse, vTexCoords).rgb * max(dot(n, lightDir), 0.0) * sLight.diffuse;
 
   vec3 viewDir = normalize(viewPos - vPos);
   vec3 h = normalize(lightDir + viewDir);
   float spec = pow(max(dot(h, n), 0.0), material.shiness);
-  vec3 specular = texture(material.specular, vTexCoords).rgb * spec * pLight.specular;
+  vec3 specular = texture(material.specular, vTexCoords).rgb * spec * sLight.specular;
   
-  float attenuation = 1.0f / (pLight.constant + (pLight.linear + pLight.quad * distance) * distance);
+  float attenuation = 1.0f / (sLight.constant + (sLight.linear + sLight.quad * distance) * distance);
 
-  FragColor = vec4((ambient + diffuse + specular) * attenuation, 1.0f);
+  FragColor = vec4(ambient + (diffuse + specular) * attenuation * intensity, 1.0f);
 }

@@ -93,6 +93,11 @@ glm::vec3 Camera::GetPosition() const
   return mPosition;
 }
 
+glm::vec3 Camera::GetFront() const
+{
+  return mFront;
+}
+
 glm::mat4 Camera::GetViewMatrix() const
 {
   return mViewMatrix;

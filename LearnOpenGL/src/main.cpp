@@ -193,12 +193,14 @@ int main()
   //shader.SetMat4("model", model);
   //shader.SetMat4("nModel", glm::transpose(glm::inverse(model)));
   //shader.SetVec3("pLight.direction", -0.2f, -1.0f, -0.3f);
-  shader.SetVec3("pLight.ambient", 0.2f, 0.2f, 0.2f);
-  shader.SetVec3("pLight.diffuse", 0.5f, 0.5f, 0.5f);
-  shader.SetVec3("pLight.specular", 1.0f, 1.0f, 1.0f);
-  shader.SetFloat("pLight.constant", 1.0f);
-  shader.SetFloat("pLight.linear", 0.09f);
-  shader.SetFloat("pLight.quad", 0.032f);
+  shader.SetVec3("sLight.ambient", 0.2f, 0.2f, 0.2f);
+  shader.SetVec3("sLight.diffuse", 0.8f, 0.8f, 0.8f);
+  shader.SetVec3("sLight.specular", 1.0f, 1.0f, 1.0f);
+  shader.SetFloat("sLight.constant", 1.0f);
+  shader.SetFloat("sLight.linear", 0.09f);
+  shader.SetFloat("sLight.quad", 0.032f);
+  shader.SetFloat("sLight.cutoff", glm::cos(glm::radians(12.5f)));
+  shader.SetFloat("sLight.outerCutoff", glm::cos(glm::radians(17.5f)));
  
   //shader.SetVec3("material.ambient", 0.1f, 0.05f, 0.031f);
   //shader.SetVec3("material.diffuse", 1.0f, 0.5f, 0.31f);
@@ -267,16 +269,18 @@ int main()
     glm::mat4 projection = camera.GetProjectionMatrix();
     glm::mat4 view = camera.GetViewMatrix();
 
-    lightShader.Bind();
-    lightShader.SetMat4("model", lightModel);
-    lightShader.SetMat4("view", view);
-    lightShader.SetMat4("projection", projection);
-    glBindVertexArray(lightVao);
-    glDrawElements(GL_TRIANGLES, 6 * 6, GL_UNSIGNED_INT, nullptr);
+    //lightShader.Bind();
+    //lightShader.SetMat4("model", lightModel);
+    //lightShader.SetMat4("view", view);
+    //lightShader.SetMat4("projection", projection);
+    //glBindVertexArray(lightVao);
+    //glDrawElements(GL_TRIANGLES, 6 * 6, GL_UNSIGNED_INT, nullptr);
 
     shader.Bind();
     auto camerePos = camera.GetPosition();
-    shader.SetVec3("pLight.position", lightPos.x, lightPos.y, lightPos.z);
+    shader.SetVec3("sLight.position", camerePos.x, camerePos.y, camerePos.z);
+    auto front = camera.GetFront();
+    shader.SetVec3("sLight.direction", front.x, front.y, front.z);
     shader.SetVec3("viewPos", camerePos.x, camerePos.y, camerePos.z);
     //shader.SetVec3("light.position", lightPos.x, lightPos.y, lightPos.z);
     shader.SetMat4("view", view);
