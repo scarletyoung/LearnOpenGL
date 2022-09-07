@@ -49,18 +49,28 @@ struct Light
   vec3 specular;
 };
 uniform Light light;
+
+struct DirectionalLight
+{
+  vec3 direction;
+  vec3 ambient;
+  vec3 diffuse;
+  vec3 specular;
+};
+uniform DirectionalLight dLight;
+
 void main()
 {
-  vec3 ambient = texture(material.diffuse, vTexCoords).rgb * light.ambient;
+  vec3 ambient = texture(material.diffuse, vTexCoords).rgb * dLight.ambient;
 
   vec3 n = normalize(vNormal);
-  vec3 lightDir = normalize(light.position - vPos);
-  vec3 diffuse = texture(material.diffuse, vTexCoords).rgb * max(dot(n, lightDir), 0.0) * light.diffuse;
+  vec3 lightDir = normalize(-dLight.direction);
+  vec3 diffuse = texture(material.diffuse, vTexCoords).rgb * max(dot(n, lightDir), 0.0) * dLight.diffuse;
 
   vec3 viewDir = normalize(viewPos - vPos);
   vec3 h = normalize(lightDir + viewDir);
   float spec = pow(max(dot(h, n), 0.0), material.shiness);
-  vec3 specular = texture(material.specular, vTexCoords).rgb * spec * light.specular;
+  vec3 specular = texture(material.specular, vTexCoords).rgb * spec * dLight.specular;
 
   FragColor = vec4((ambient + diffuse + specular), 1.0f);
 }
