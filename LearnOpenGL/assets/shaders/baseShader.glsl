@@ -28,27 +28,15 @@ in vec2 vTexCoords;
 
 out vec4 FragColor;
 
-uniform vec3 lightPos;
-uniform vec3 lightColor;
-
 uniform vec3 viewPos;
 
 struct Material 
 {
   sampler2D diffuse;
   sampler2D specular;
-  float shiness;
+  float shininess;
 };
 uniform Material material;
-
-struct Light
-{
-  vec3 position;
-  vec3 ambient;
-  vec3 diffuse;
-  vec3 specular;
-};
-uniform Light light;
 
 struct DirectionalLight
 {
@@ -70,7 +58,8 @@ struct PointLight
   float linear;
   float quad;
 };
-uniform PointLight pLight;
+#define NP_POINT_LIGHTS 4
+uniform PointLight pLights[NP_POINT_LIGHTS];
 
 struct SpotLight
 {
@@ -90,26 +79,69 @@ struct SpotLight
 };
 uniform SpotLight sLight;
 
-void main()
+vec3 CalcDirLight(DirectionalLight light, vec3 normal, vec3 viewDir)
 {
-  vec3 ambient = texture(material.diffuse, vTexCoords).rgb * sLight.ambient;
+  vec3 ambient = light.ambient * texture(material.diffuse, vTexCoords).rgb;
+  vec3 lightDir = normalize(-light.direction);
+  vec3 diffuse = light.diffuse * texture(material.diffuse, vTexCoords).rgb * max(dot(normal, lightDir), 0.0);
+  
+  vec3 h = normalize(lightDir + viewDir);
+  vec3 specular = light.specular * texture(material.specular, vTexCoords).rgb * pow(max(dot(normal, h), 0.0), material.shininess);
+  return ambient + diffuse + specular;
+}
 
-  vec3 lightDir = sLight.position - vPos;
+vec3 CalcPointLight(PointLight light, vec3 normal, vec3 viewDir) 
+{
+  vec3 ambient = light.ambient * texture(material.diffuse, vTexCoords).rgb;
+  
+  vec3 lightDir = light.position - vPos;
   float distance = length(lightDir);
   lightDir = normalize(lightDir);
-  float theta = dot(lightDir, normalize(-sLight.direction));
-  float epsilon = sLight.cutoff - sLight.outerCutoff;
-  float intensity = clamp((theta - sLight.outerCutoff) / epsilon, 0.0, 1.0);
 
-  vec3 n = normalize(vNormal);
-  vec3 diffuse = texture(material.diffuse, vTexCoords).rgb * max(dot(n, lightDir), 0.0) * sLight.diffuse;
-
-  vec3 viewDir = normalize(viewPos - vPos);
+  float diff = max(dot(normal, lightDir), 0.0);
+  vec3 diffuse = texture(material.diffuse, vTexCoords).rgb * diff * light.diffuse;
+ 
+  vec3 r = reflect(-lightDir, normal);
   vec3 h = normalize(lightDir + viewDir);
-  float spec = pow(max(dot(h, n), 0.0), material.shiness);
-  vec3 specular = texture(material.specular, vTexCoords).rgb * spec * sLight.specular;
+  float spec = pow(max(dot(r, viewDir), 0.0), material.shininess);
+  vec3 specular = texture(material.specular, vTexCoords).rgb * spec * light.specular;
   
-  float attenuation = 1.0f / (sLight.constant + (sLight.linear + sLight.quad * distance) * distance);
+  float attenuation = 1.0f / (light.constant + (light.linear + light.quad * distance) * distance);
 
-  FragColor = vec4(ambient + (diffuse + specular) * attenuation * intensity, 1.0f);
+  return (ambient + diffuse + specular);// * attenuation;
+}
+
+vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 viewDir)
+{
+  vec3 ambient = texture(material.diffuse, vTexCoords).rgb * light.ambient;
+
+  vec3 lightDir = light.position - vPos;
+  float distance = length(lightDir);
+  lightDir = normalize(lightDir);
+  float theta = dot(lightDir, normalize(-light.direction));
+  float epsilon = light.cutoff - light.outerCutoff;
+  float intensity = clamp((theta - light.outerCutoff) / epsilon, 0.0, 1.0);
+
+  vec3 diffuse = texture(material.diffuse, vTexCoords).rgb * max(dot(normal, lightDir), 0.0) * light.diffuse;
+
+  vec3 h = normalize(lightDir + viewDir);
+  float spec = pow(max(dot(h, normal), 0.0), material.shininess);
+  vec3 specular = texture(material.specular, vTexCoords).rgb * spec * light.specular;
+  
+  float attenuation = 1.0f / (light.constant + (light.linear + light.quad * distance) * distance);
+
+  return ambient + (diffuse + specular) * attenuation * intensity;
+}
+
+void main()
+{
+  vec3 n = normalize(vNormal);
+  vec3 viewDir = normalize(viewPos - vPos);
+  vec3 result;
+  result = CalcDirLight(dLight, n, viewDir);
+  for (int i = 0; i < NP_POINT_LIGHTS; ++i) {
+    result += CalcPointLight(pLights[i], n, viewDir);
+  }
+  result += CalcSpotLight(sLight, n, viewDir);
+  FragColor = vec4(result, 1.0);
 }

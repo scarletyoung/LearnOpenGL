@@ -189,24 +189,6 @@ int main()
 
   lightShader.SetVec3("lightColor", 1.0f, 1.0f, 1.0f);
 
-  glm::mat4 model(1.0f);
-  //shader.SetMat4("model", model);
-  //shader.SetMat4("nModel", glm::transpose(glm::inverse(model)));
-  //shader.SetVec3("pLight.direction", -0.2f, -1.0f, -0.3f);
-  shader.SetVec3("sLight.ambient", 0.2f, 0.2f, 0.2f);
-  shader.SetVec3("sLight.diffuse", 0.8f, 0.8f, 0.8f);
-  shader.SetVec3("sLight.specular", 1.0f, 1.0f, 1.0f);
-  shader.SetFloat("sLight.constant", 1.0f);
-  shader.SetFloat("sLight.linear", 0.09f);
-  shader.SetFloat("sLight.quad", 0.032f);
-  shader.SetFloat("sLight.cutoff", glm::cos(glm::radians(12.5f)));
-  shader.SetFloat("sLight.outerCutoff", glm::cos(glm::radians(17.5f)));
- 
-  //shader.SetVec3("material.ambient", 0.1f, 0.05f, 0.031f);
-  //shader.SetVec3("material.diffuse", 1.0f, 0.5f, 0.31f);
-  //shader.SetVec3("material.specular", 0.5f, 0.5f, 0.5f);
-  shader.SetFloat("material.shiness", 32.0);
-
   int width, height, channel;
   stbi_set_flip_vertically_on_load(true);
   unsigned char* data = stbi_load("assets/textures/container2.png", &width, &height, &channel, 4);
@@ -236,8 +218,13 @@ int main()
 
   glBindTextureUnit(0, diffuseTexture);
   glBindTextureUnit(1, specularTexture);
+
+  //shader.SetVec3("material.ambient", 0.1f, 0.05f, 0.031f);
+  //shader.SetVec3("material.diffuse", 1.0f, 0.5f, 0.31f);
+  //shader.SetVec3("material.specular", 0.5f, 0.5f, 0.5f);
   shader.SetInt("material.diffuse", 0);
   shader.SetInt("material.specular", 1);
+  shader.SetFloat("material.shininess", 32.0);
 
   glm::vec3 cubePositions[] = {
     glm::vec3(0.0f,  0.0f,  0.0f),
@@ -251,30 +238,83 @@ int main()
     glm::vec3(1.5f,  0.2f, -1.5f),
     glm::vec3(-1.3f,  1.0f, -1.5f)
   };
+  glm::vec3 pointLightPositions[] = {
+    glm::vec3(0.7f,  0.2f,  2.0f),
+    glm::vec3(2.3f, -3.3f, -4.0f),
+    glm::vec3(-4.0f,  2.0f, -12.0f),
+    glm::vec3(0.0f,  0.0f, -3.0f)
+  };
 
+  //directional light
+  shader.SetVec3("dLight.direction", -0.2f, -1.0f, -0.3f);
+  shader.SetVec3("dLight.ambient", 0.2f, 0.2f, 0.2f);
+  shader.SetVec3("dLight.diffuse", 0.4f, 0.4f, 0.4f);
+  shader.SetVec3("dLight.specular", 0.5f, 0.5f, 0.5f);
+  // piont light 1
+  shader.SetVec3("pLights[0].position", pointLightPositions[0].x, pointLightPositions[0].y, pointLightPositions[0].z);
+  shader.SetVec3("pLights[0].ambient", 0.05f, 0.05f, 0.05f);
+  shader.SetVec3("pLights[0].diffuse", 0.8f, 0.8f, 0.8f);
+  shader.SetVec3("pLights[0].specular", 1.0f, 1.0f, 1.0f);
+  shader.SetFloat("pLights[0].constant", 1.0f);
+  shader.SetFloat("pLights[0].linear", 0.09f);
+  shader.SetFloat("pLights[0].quad", 0.032f);
+  // piont light 2
+  shader.SetVec3("pLights[1].position", pointLightPositions[1].x, pointLightPositions[1].y, pointLightPositions[1].z);
+  shader.SetVec3("pLights[1].ambient", 0.05f, 0.05f, 0.05f);
+  shader.SetVec3("pLights[1].diffuse", 0.8f, 0.8f, 0.8f);
+  shader.SetVec3("pLights[1].specular", 1.0f, 1.0f, 1.0f);
+  shader.SetFloat("pLights[1].constant", 1.0f);
+  shader.SetFloat("pLights[1].linear", 0.09f);
+  shader.SetFloat("pLights[1].quad", 0.032f);
+  // piont light 3
+  shader.SetVec3("pLights[2].position", pointLightPositions[2].x, pointLightPositions[2].y, pointLightPositions[2].z);
+  shader.SetVec3("pLights[2].ambient", 0.05f, 0.05f, 0.05f);
+  shader.SetVec3("pLights[2].diffuse", 0.8f, 0.8f, 0.8f);
+  shader.SetVec3("pLights[2].specular", 1.0f, 1.0f, 1.0f);
+  shader.SetFloat("pLights[2].constant", 1.0f);
+  shader.SetFloat("pLights[2].linear", 0.09f);
+  shader.SetFloat("pLights[2].quad", 0.032f);
+  // piont light 4
+  shader.SetVec3("pLights[3].position", pointLightPositions[3].x, pointLightPositions[3].y, pointLightPositions[3].z);
+  shader.SetVec3("pLights[3].ambient", 0.05f, 0.05f, 0.05f);
+  shader.SetVec3("pLights[3].diffuse", 0.8f, 0.8f, 0.8f);
+  shader.SetVec3("pLights[3].specular", 1.0f, 1.0f, 1.0f);
+  shader.SetFloat("pLights[3].constant", 1.0f);
+  shader.SetFloat("pLights[3].linear", 0.09f);
+  shader.SetFloat("pLights[3].quad", 0.032f);
+  // spot light
+  shader.SetVec3("sLight.ambient", 0.0f, 0.0f, 0.0f);
+  shader.SetVec3("sLight.diffuse", 1.0f, 1.0f, 1.0f);
+  shader.SetVec3("sLight.specular", 1.0f, 1.0f, 1.0f);
+  shader.SetFloat("sLight.constant", 1.0f);
+  shader.SetFloat("sLight.linear", 0.09f);
+  shader.SetFloat("sLight.quad", 0.032f);
+  shader.SetFloat("sLight.cutoff", glm::cos(glm::radians(12.5f)));
+  shader.SetFloat("sLight.outerCutoff", glm::cos(glm::radians(15.0f)));
 
   while (!glfwWindowShouldClose(window))
   {
     ProcessInput(window);
     glEnable(GL_DEPTH_TEST);
-    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    lightPos = glm::vec3(5.0f * sin(glfwGetTime()), 0.0f, 5.0f * cos(glfwGetTime()));
-
-    glm::mat4 lightModel(1.0f);
-    lightModel = glm::translate(lightModel, lightPos);
-    lightModel = glm::scale(lightModel, glm::vec3(0.2f));
 
     glm::mat4 projection = camera.GetProjectionMatrix();
     glm::mat4 view = camera.GetViewMatrix();
 
-    //lightShader.Bind();
-    //lightShader.SetMat4("model", lightModel);
-    //lightShader.SetMat4("view", view);
-    //lightShader.SetMat4("projection", projection);
-    //glBindVertexArray(lightVao);
-    //glDrawElements(GL_TRIANGLES, 6 * 6, GL_UNSIGNED_INT, nullptr);
+    lightShader.Bind();
+    
+    lightShader.SetMat4("view", view);
+    lightShader.SetMat4("projection", projection);
+    glBindVertexArray(lightVao);
+    for (int i = 0; i < 4; ++i)
+    {
+      glm::mat4 lightModel(1.0f);
+      lightModel = glm::translate(lightModel, pointLightPositions[i]);
+      lightModel = glm::scale(lightModel, glm::vec3(0.2f));
+      lightShader.SetMat4("model", lightModel);
+      glDrawElements(GL_TRIANGLES, 6 * 6, GL_UNSIGNED_INT, nullptr);
+    }
 
     shader.Bind();
     auto camerePos = camera.GetPosition();
@@ -282,7 +322,6 @@ int main()
     auto front = camera.GetFront();
     shader.SetVec3("sLight.direction", front.x, front.y, front.z);
     shader.SetVec3("viewPos", camerePos.x, camerePos.y, camerePos.z);
-    //shader.SetVec3("light.position", lightPos.x, lightPos.y, lightPos.z);
     shader.SetMat4("view", view);
     shader.SetMat4("projection", projection);
     glBindVertexArray(vao);
